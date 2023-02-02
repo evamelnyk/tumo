@@ -10,6 +10,11 @@ function draw(){
   background(12, 13, 54) 
   for (const balloon of Game.balloons){ 
     balloon.display() 
+    balloon.move(Game.score) 
+ 
+    if(balloon.y <= balloon.size/2 && balloon.color != "black" && balloon.color != "red"){ 
+      noLoop() 
+      Game.balloons.length = 0 
       background(28, 21, 51) 
       let score = Game.score 
       Game.score = "" 
