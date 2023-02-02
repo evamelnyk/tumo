@@ -1,0 +1,23 @@
+{
+  "name": "tumo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripteva.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evamelnyk/tumo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evamelnyk/tumo/issues"
+  },
+  "homepage": "https://github.com/evamelnyk/tumo#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

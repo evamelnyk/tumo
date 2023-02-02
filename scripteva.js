@@ -14,6 +14,7 @@ function draw(){
  
     if(balloon.y <= balloon.size/2 && balloon.color != "black" && balloon.color != "red"){ 
       noLoop() 
+      clearInterval(interval);
       Game.balloons.length = 0 
       background(28, 21, 51) 
       let score = Game.score 
@@ -54,14 +55,21 @@ function draw(){
 function mousePressed(){ 
   if(!isLooping()){ 
     loop() 
+    inerval = setInterval(()=> {
+      Game.sendStatistics();
+    }, 5000);
     Game.score = 0 
   } 
+  
   Game.checkIfBalloonBurst() 
 } 
 
  
 class Game { 
   static balloons = [] 
+  static commonBurst = 0
+  static uniqCount = 0
+  static angryCount = 0
   static score = 0 
  
  
@@ -105,7 +113,28 @@ class Game {
       } 
     }) 
   } 
+
+  static sendStatistics() {
+    let statistics = {
+      commonBurst: this.commonCount,
+      uniqBurst: this.uniqCount,
+      angryBurst: this.angryCount,
+      score: this.score,
+    }
+
+    fetch('/statistic', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistics)
+    })
+  }
 } 
+
+let interval = setInterval(() =>{
+  Game.sendStatistics()
+}, 5000);
  
 class CommonBalloon { 
   constructor(color, size){ 
@@ -136,6 +165,7 @@ class CommonBalloon {
   burst(index){ 
     Game.balloons.splice(index, 1) 
     Game.score += 1 
+    Game.commonCount += 1
   } 
 } 
  
@@ -146,6 +176,7 @@ class UniqBalloon extends CommonBalloon{
   burst(index){ 
     Game.balloons.splice(index, 1) 
     Game.score += 10 
+    Game.uniqCount += 1
   } 
    
 } 
@@ -158,6 +189,7 @@ class AngryBalloon extends CommonBalloon{
   burst(index){ 
     Game.balloons.splice(index, 1) 
     Game.score -= 10 
+    Game.angryCount += 1
   } 
    
 }
@@ -169,6 +201,7 @@ class PresentBalloon extends CommonBalloon{
   burst(index){ 
     Game.balloons.splice(index, 1) 
     Game.score += 50 
+    Game.presentCount += 1
   } 
    
 }
@@ -180,6 +213,7 @@ class BadBalloon extends CommonBalloon{
   burst(index){ 
     Game.balloons.splice(index, 1) 
     Game.score -= 40 
+    Game.badCount += 1
   } 
    
 }
@@ -191,6 +225,7 @@ class NotbadBalloon extends CommonBalloon{
   burst(index){ 
     Game.balloons.splice(index, 1) 
     Game.score -= 25 
+    Game.notbadCount += 1
   } 
    
 }
